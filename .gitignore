@@ -1,0 +1,28 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build output
+bin/
+obj/
+
+# Visual Studio user-specific files
+*.csproj.user
+
+# Visual Studio Code
+.vscode/
+
+# JetBrains Rider
+.idea/
+
+# Logs
+*.log
+
+# Local database files
+*.mdf
+*.ldf
+
+# OS files
+.DS_Store
+Thumbs.db
