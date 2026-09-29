@@ -1,9 +1,164 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿
+@model IEnumerable<WorkFlowHR.Models.Employee>
+
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-@* <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div> *@
-<a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Add Employee</a>
+<div class="dashboard-page">
+
+    <!-- Page Header -->
+    <div class="dashboard-header">
+        <div>
+            <h1>Dashboard</h1>
+            <p>Welcome to WorkFlowHR Employee Management System.</p>
+        </div>
+
+        <a asp-controller="Employee"
+           asp-action="Create"
+           class="btn btn-primary dashboard-primary-btn">
+            + Add Employee
+        </a>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-4 dashboard-stats">
+
+        <div class="col-12 col-md-6">
+            <div class="dashboard-stat-card employee-stat">
+                <div class="stat-card-content">
+                    <div class="stat-label">Total Employees</div>
+
+                    <div class="stat-number">
+                        @ViewBag.TotalEmployees
+                    </div>
+
+                    <div class="stat-description">
+                        Employees registered in the system
+                    </div>
+                </div>
+
+                <div class="stat-card-footer">
+                    <a asp-controller="Employee"
+                       asp-action="Index"
+                       class="dashboard-text-link">
+                        View all employees
+                        <span aria-hidden="true">&rarr;</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="dashboard-stat-card department-stat">
+                <div class="stat-card-content">
+                    <div class="stat-label">Total Departments</div>
+
+                    <div class="stat-number">
+                        @ViewBag.TotalDepartments
+                    </div>
+
+                    <div class="stat-description">
+                        Departments configured in the system
+                    </div>
+                </div>
+
+                <div class="stat-card-footer">
+                    <span class="stat-footer-note">
+                        Department overview
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Recent Employees -->
+    <section class="dashboard-table-card">
+
+        <div class="dashboard-section-header">
+            <div>
+                <h2>Recent Employees</h2>
+                <p>Latest employee records added to WorkFlowHR.</p>
+            </div>
+
+            <a asp-controller="Employee"
+               asp-action="Index"
+               class="btn btn-outline-primary">
+                View All
+            </a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table dashboard-table align-middle mb-0">
+
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Employee</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Designation</th>
+                        <th scope="col">Department</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var employee in Model)
+                        {
+                            <tr>
+                                <td class="employee-id">
+                                    #@employee.Id
+                                </td>
+
+                                <td>
+                                    <span class="employee-name">
+                                        @employee.Name
+                                    </span>
+                                </td>
+
+                                <td class="employee-email">
+                                    @employee.Email
+                                </td>
+
+                                <td>
+                                    @employee.Designation
+                                </td>
+
+                                <td>
+                                    <span class="department-badge">
+                                        @(employee.Department?.Name ?? "Not assigned")
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="empty-table-message">
+                                <h5>No employees found</h5>
+                                <p>Add an employee to see records here.</p>
+
+                                <a asp-controller="Employee"
+                                   asp-action="Create"
+                                   class="btn btn-primary btn-sm">
+                                    Add First Employee
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+        <div class="dashboard-table-footer">
+            Showing @((Model ?? Enumerable.Empty<WorkFlowHR.Models.Employee>()).Count())
+            recent employee record(s).
+        </div>
+
+    </section>
+
+</div>
